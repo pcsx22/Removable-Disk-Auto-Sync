@@ -234,6 +234,23 @@ int main(int argc,char * argv[]){
             viewChanges();
         }
     }
+    else if(strcmp(argv[1],"view")==0){
+        dirDb->selectTable("SELECT * FROM syncedDir");
+        cout<<"Synced Paths"<<endl;
+        for(int i = 0;i<values.size();i++){
+            cout<<values.at(i)<<" -- " <<values.at(i+1)<<endl;
+            i++;
+        }
+    }
+    else if(strcmp(argv[1],"remove") == 0 && argv[2] != NULL && argv[3] != NULL){
+        string removablePath = string(argv[2]);
+        string localPath = string(argv[3]);
+        string sql = "DELETE FROM syncedDir where removable_dsk_path = '" + removablePath + "' and local_path = '" + localPath + "'";
+        if(dirDb->selectTable(sql))
+            cout<<"Removal complete"<<endl;
+        else
+            cout<<"Error Occured"<<endl;
+    }
     else{
         cout<<"Invalid command"<<endl;
     }
